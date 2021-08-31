@@ -55,7 +55,6 @@ async def prime_abgb(query):
     soup = get_soup(f"https://www.primeabgb.com/?post_type=product&taxonomy=product_cat&product_cat=0&s={search_query}")
 
     results = []
-    print(soup.select(".products .product-innfo"))
     for product in soup.select(".products .product-innfo"):
         results.append(
             {
