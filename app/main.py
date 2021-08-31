@@ -2,18 +2,17 @@ from fastapi import FastAPI, HTTPException
 from starlette.responses import RedirectResponse
 import asyncio
 
-from scraper.components import vedant_computers
+from scraper.components import md_computers, prime_abgb, vedant_computers
 
 description = """
 The PCPartFinder API scrapes and finds information about the availability of different PC components in India.
 
 ## Sources
 
-- The IT Depot
+- RP Tech
 - MD Computers
 - Vedant Computers
 - Prime ABGB
-- Amazon India
 """
 
 tags_metadata = [{
@@ -47,6 +46,6 @@ async def search(search_query: str):
     if not search_query:
         raise HTTPException(status_code=400, detail="Search query not provided.")
     else:
-        functions = [vedant_computers(search_query)]
+        functions = [vedant_computers(search_query), md_computers(search_query), prime_abgb(search_query)]
         search_results = await asyncio.gather(*functions)
         return search_results
