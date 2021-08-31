@@ -1,9 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from starlette.responses import RedirectResponse
+import asyncio
+
+from scraper.components import vedant_computers
 
 description = """
 The PCPartFinder API scrapes and finds information about the availability of different PC components in India.
 
-## Information Sources
+## Sources
 
 - The IT Depot
 - MD Computers
@@ -11,6 +15,11 @@ The PCPartFinder API scrapes and finds information about the availability of dif
 - Prime ABGB
 - Amazon India
 """
+
+tags_metadata = [{
+    "name": "search",
+    "description": "Search and scrape information from the sources."
+}]
 
 app = FastAPI(
     title="PCPartFinder",
@@ -21,6 +30,7 @@ app = FastAPI(
         "url": "https://gokulv.netlify.app",
         "email": "viswanath1gokul@gmail.com",
     },
+    openapi_tags=tags_metadata,
     license_info={
         "name": "GNU GPL 3.0",
         "url": "https://github.com/1Gokul/pcpartfinder-backend/blob/main/LICENSE"
@@ -30,4 +40,13 @@ app = FastAPI(
 
 @app.get("/")
 async def root():
-    return {"message": "PCPartFinder - Go to /docs for more information."}
+    return RedirectResponse(url="/docs")
+
+@app.get("/api/search/{search_query}", tags=["search"])
+async def search(search_query: str):
+    if not search_query:
+        raise HTTPException(status_code=400, detail="Search query not provided.")
+    else:
+        functions = [vedant_computers(search_query)]
+        search_results = await asyncio.gather(*functions)
+        return search_results
