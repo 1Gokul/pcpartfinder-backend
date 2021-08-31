@@ -18,7 +18,7 @@ async def vedant_computers(query):
         results.append(
             {
                 "name": product.select_one(".name a").get_text(),
-                "link": product.select_one(".name a")["href"],
+                "link": product.select_one(".name a")["href"].split("?", 1)[0],
                 "price": product.select_one(".price").get_text(strip=True),
             }
         )
