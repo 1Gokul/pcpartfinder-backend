@@ -44,16 +44,13 @@ async def root():
 
 @app.get("/api/search/{search_query}", tags=["search"])
 async def search(search_query: str):
-    if not search_query:
-        raise HTTPException(status_code=400, detail="Search query not provided.")
-    else:
-        functions = [
-            vedant_computers(search_query),
-            md_computers(search_query),
-            prime_abgb(search_query),
-            rp_tech(search_query),
-        ]
-        search_results = await asyncio.gather(*functions)
+    functions = [
+        vedant_computers(search_query),
+        md_computers(search_query),
+        prime_abgb(search_query),
+        rp_tech(search_query),
+    ]
+    search_results = await asyncio.gather(*functions)
 
-        # search_results is a list of lists. The code below flattens it out.
-        return [result for sublist in search_results for result in sublist]
+    # search_results is a list of lists. The code below flattens it out.
+    return [result for sublist in search_results for result in sublist]

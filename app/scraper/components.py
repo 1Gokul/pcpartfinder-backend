@@ -66,7 +66,7 @@ async def prime_abgb(query):
                 "store": "primeabgb",
                 "name": product.select_one(".product-name a").get_text(),
                 "link": product.select_one(".product-name a")["href"],
-                "price": f"₹{product.select_one('.woocommerce-Price-amount').get_text(strip=True).split('₹')[-1]}"
+                "price": f"₹{product.select_one('.woocommerce-Price-amount').get_text(strip=True).split('₹')[-1]}",
             }
         )
 
