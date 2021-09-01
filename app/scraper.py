@@ -66,7 +66,7 @@ async def prime_abgb(query):
                 "store": "primeabgb",
                 "name": product.select_one(".product-name a").get_text(),
                 "link": product.select_one(".product-name a")["href"],
-                "price": f"₹{product.select_one('.woocommerce-Price-amount').get_text(strip=True).split('₹')[-1]}",
+                "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
             }
         )
 
@@ -81,13 +81,16 @@ async def rp_tech(query):
 
     results = []
     for product in soup.select(".products-row .product-box"):
-        results.append(
-            {
-                "store": "rptech",
-                "name": product.select_one(".product-title a").get_text(strip=True),
-                "link": product.select_one(".product-title a")["href"],
-                "price": f"₹{product.select_one('.price-tag').get_text(strip=True).split('₹')[-1]}",
-            }
-        )
+
+        # RPTech has ads in their search results. This will skip them.
+        if product.find_all("div", {"class": "price-tag"}):
+            results.append(
+                {
+                    "store": "rptech",
+                    "name": product.select_one(".product-title a").get_text(strip=True),
+                    "link": product.select_one(".product-title a")["href"],
+                    "price": f"₹{product.select_one('.price-tag').get_text(strip=True).split('₹')[-1]}",
+                }
+            )
 
     return results
