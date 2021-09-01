@@ -25,7 +25,7 @@ async def vedant_computers(query):
             {
                 "name": product.select_one(".name a").get_text(),
                 "link": product.select_one(".name a")["href"].split("?", 1)[0],
-                "price": product.select_one(".price").get_text(strip=True),
+                "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
             }
         )
 
@@ -44,7 +44,7 @@ async def md_computers(query):
             {
                 "name": product.select_one("h4 a").get_text(),
                 "link": product.select_one("h4 a")["href"].split("?", 1)[0],
-                "price": product.select_one(".price").get_text(strip=True),
+                "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
             }
         )
 
@@ -63,9 +63,7 @@ async def prime_abgb(query):
             {
                 "name": product.select_one(".product-name a").get_text(),
                 "link": product.select_one(".product-name a")["href"],
-                "price": product.select_one(".woocommerce-Price-amount").get_text(
-                    strip=True
-                ),
+                "price": f"₹{product.select_one('.woocommerce-Price-amount').get_text(strip=True).split('₹')[-1]}"
             }
         )
 
@@ -84,7 +82,7 @@ async def rp_tech(query):
             {
                 "name": product.select_one(".product-title a").get_text(strip=True),
                 "link": product.select_one(".product-title a")["href"],
-                "price": product.select_one(".price-tag").get_text(strip=True),
+                "price": f"₹{product.select_one('.price-tag').get_text(strip=True).split('₹')[-1]}",
             }
         )
 
