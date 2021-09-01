@@ -87,7 +87,7 @@ async def it_depot(query):
                 {
                     "store": "the_it_depot",
                     "name": product.select_one(".product_title a").get_text(strip=True),
-                    "link": product.select_one(".product_title a")["href"],
+                    "link": f"https://www.theitdepot.com/{product.select_one('.product_title a')['href']}",
                     "price": f"₹{product.select_one('.card-text strong').get_text(strip=True)}",
                 }
             )
