@@ -1,8 +1,8 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from starlette.responses import RedirectResponse
 import asyncio
 
-from scraper.components import md_computers, prime_abgb, rp_tech, vedant_computers
+from scraper import md_computers, prime_abgb, rp_tech, vedant_computers
 
 description = """
 The PCPartFinder API scrapes and finds information about the availability of different PC components in India.
