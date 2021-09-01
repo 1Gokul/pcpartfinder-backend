@@ -2,14 +2,14 @@ from fastapi import FastAPI
 from starlette.responses import RedirectResponse
 import asyncio
 
-from scraper import md_computers, prime_abgb, rp_tech, vedant_computers
+from scraper import it_depot, md_computers, prime_abgb, vedant_computers
 
 description = """
 The PCPartFinder API scrapes and finds information about the availability of different PC components in India.
 
 ## Sources
 
-- RP Tech
+- The IT Depot
 - MD Computers
 - Vedant Computers
 - Prime ABGB
@@ -48,7 +48,7 @@ async def search(search_query: str):
         vedant_computers(search_query),
         md_computers(search_query),
         prime_abgb(search_query),
-        rp_tech(search_query),
+        it_depot(search_query),
     ]
     search_results = await asyncio.gather(*functions)
 

@@ -73,23 +73,22 @@ async def prime_abgb(query):
     return results
 
 
-async def rp_tech(query):
+async def it_depot(query):
     search_query = query.replace(" ", "+")
     soup = get_soup(
-        f"https://rptechindia.in/catalogsearch/result/index/?q={search_query}&stock_filter=258"
+        f"https://www.theitdepot.com/search.html?keywords={search_query}"
     )
-
     results = []
-    for product in soup.select(".products-row .product-box"):
+    for product in soup.select(".product-list .product-item"):
 
-        # RPTech has ads in their search results. This will skip them.
-        if product.find_all("div", {"class": "price-tag"}):
+        # Filter out items that are out of stock
+        if not product.find_all("img", {"class": "img-gray"}):
             results.append(
                 {
-                    "store": "rptech",
-                    "name": product.select_one(".product-title a").get_text(strip=True),
-                    "link": product.select_one(".product-title a")["href"],
-                    "price": f"₹{product.select_one('.price-tag').get_text(strip=True).split('₹')[-1]}",
+                    "store": "the_it_depot",
+                    "name": product.select_one(".product_title a").get_text(strip=True),
+                    "link": product.select_one(".product_title a")["href"],
+                    "price": f"₹{product.select_one('.card-text strong').get_text(strip=True)}",
                 }
             )
 
