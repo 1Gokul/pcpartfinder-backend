@@ -23,13 +23,14 @@ async def vedant_computers(query):
     for product in soup.select(".main-products.product-grid .caption"):
         results.append(
             {
+                "store": "vedant",
                 "name": product.select_one(".name a").get_text(),
                 "link": product.select_one(".name a")["href"].split("?", 1)[0],
                 "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
             }
         )
 
-    return {"site": "vedant_computers", "results": results}
+    return results
 
 
 async def md_computers(query):
@@ -42,13 +43,14 @@ async def md_computers(query):
     for product in soup.select(".product-item-container .right-block.right-b"):
         results.append(
             {
+                "store": "md",
                 "name": product.select_one("h4 a").get_text(),
                 "link": product.select_one("h4 a")["href"].split("?", 1)[0],
                 "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
             }
         )
 
-    return {"site": "md_computers", "results": results}
+    return results
 
 
 async def prime_abgb(query):
@@ -61,13 +63,14 @@ async def prime_abgb(query):
     for product in soup.select(".products .product-innfo"):
         results.append(
             {
+                "store": "primeabgb",
                 "name": product.select_one(".product-name a").get_text(),
                 "link": product.select_one(".product-name a")["href"],
                 "price": f"₹{product.select_one('.woocommerce-Price-amount').get_text(strip=True).split('₹')[-1]}"
             }
         )
 
-    return {"site": "prime_abgb", "results": results}
+    return results
 
 
 async def rp_tech(query):
@@ -80,10 +83,11 @@ async def rp_tech(query):
     for product in soup.select(".products-row .product-box"):
         results.append(
             {
+                "store": "rptech",
                 "name": product.select_one(".product-title a").get_text(strip=True),
                 "link": product.select_one(".product-title a")["href"],
                 "price": f"₹{product.select_one('.price-tag').get_text(strip=True).split('₹')[-1]}",
             }
         )
 
-    return {"site": "rp_tech", "results": results}
+    return results

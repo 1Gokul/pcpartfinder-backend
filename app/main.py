@@ -28,6 +28,7 @@ app = FastAPI(
         "url": "https://gokulv.netlify.app",
         "email": "viswanath1gokul@gmail.com",
     },
+    swagger_favicon_url="https://placekitten.com/200/300",
     openapi_tags=tags_metadata,
     license_info={
         "name": "GNU GPL 3.0",
@@ -53,4 +54,6 @@ async def search(search_query: str):
             rp_tech(search_query),
         ]
         search_results = await asyncio.gather(*functions)
-        return search_results
+
+        # search_results is a list of lists. The code below flattens it out.
+        return [result for sublist in search_results for result in sublist]
