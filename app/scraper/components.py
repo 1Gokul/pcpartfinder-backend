@@ -11,7 +11,6 @@ def get_soup(link):
         link,
         headers=headers,
     )
-    print(link)
     return BeautifulSoup(response.content, "lxml")
 
 
