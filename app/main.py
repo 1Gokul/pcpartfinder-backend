@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from starlette.responses import RedirectResponse
 import asyncio
 
 from scraper import it_depot, md_computers, prime_abgb, vedant_computers
@@ -39,7 +38,7 @@ app = FastAPI(
 
 @app.get("/")
 async def root():
-    return RedirectResponse(url="/docs")
+    return {"message": "PCPartFinder: Go to /docs for documentation."}
 
 
 @app.get("/api/search/{search_query}", tags=["search"])
