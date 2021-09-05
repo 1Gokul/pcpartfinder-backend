@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 
 from scraper import it_depot, md_computers, prime_abgb, vedant_computers
@@ -35,6 +36,21 @@ app = FastAPI(
     },
 )
 
+# CORS settings
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "https://pcpartfinder.vercel.app"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/")
 async def root():
@@ -43,13 +59,16 @@ async def root():
 
 @app.get("/api/search/{search_query}", tags=["search"])
 async def search(search_query: str):
-    functions = [
-        vedant_computers(search_query),
-        md_computers(search_query),
-        prime_abgb(search_query),
-        it_depot(search_query),
-    ]
-    search_results = await asyncio.gather(*functions)
+    if(search_query != "null"):
+        functions = [
+            vedant_computers(search_query),
+            md_computers(search_query),
+            prime_abgb(search_query),
+            it_depot(search_query),
+        ]
+        search_results = await asyncio.gather(*functions)
 
-    # search_results is a list of lists. The code below flattens it out.
-    return [result for sublist in search_results for result in sublist]
+        # search_results is a list of lists. The code below flattens it out.
+        return [result for sublist in search_results for result in sublist]
+    else:
+        return {"error": "No search string supplied."}
