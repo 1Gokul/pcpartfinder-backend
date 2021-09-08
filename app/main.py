@@ -40,7 +40,7 @@ app = FastAPI(
 origins = [
     "http://localhost",
     "http://localhost:3000",
-    "https://pcpartfinder.vercel.app"
+    "https://pcpartfinder.vercel.app",
 ]
 
 app.add_middleware(
@@ -59,7 +59,7 @@ async def root():
 
 @app.get("/api/search/{search_query}", tags=["search"])
 async def search(search_query: str):
-    if(search_query != "null"):
+    if search_query != "null":
         functions = [
             vedant_computers(search_query),
             md_computers(search_query),
@@ -70,7 +70,10 @@ async def search(search_query: str):
 
         return {
             "n_results": sum([len(item["results"]) for item in search_results]),
-            "content": search_results
+            "content": search_results,
         }
     else:
-        return {"error": "No search string supplied."}
+        return {
+            "n_results": -1,
+            "content": {"error": "No search string supplied."},
+        }
