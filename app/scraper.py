@@ -37,7 +37,6 @@ async def md_computers(query):
     soup = get_soup(
         f"https://mdcomputers.in/index.php?search={search_query}&submit_search=&route=product%2Fsearch"
     )
-
     results = []
     for product in soup.select(".product-item-container .right-block.right-b"):
         results.append(
@@ -61,7 +60,6 @@ async def prime_abgb(query):
     for product in soup.select(".products .product-innfo"):
         results.append(
             {
-                "store": "primeabgb",
                 "name": product.select_one(".product-name a").get_text(),
                 "link": product.select_one(".product-name a")["href"],
                 "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
