@@ -38,6 +38,8 @@ app = FastAPI(
 
 # CORS settings
 origins = [
+    "http://localhost",
+    "http://localhost:3000",
     "https://pcpartfinder.vercel.app"
 ]
 
@@ -67,8 +69,8 @@ async def search(search_query: str):
         search_results = await asyncio.gather(*functions)
 
         return {
-            "length": sum([len(item["results"]) for item in search_results]),
-            "results": search_results
+            "n_results": sum([len(item["results"]) for item in search_results]),
+            "content": search_results
         }
     else:
         return {"error": "No search string supplied."}
