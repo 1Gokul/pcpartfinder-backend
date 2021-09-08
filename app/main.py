@@ -38,8 +38,6 @@ app = FastAPI(
 
 # CORS settings
 origins = [
-    "http://localhost",
-    "http://localhost:3000",
     "https://pcpartfinder.vercel.app",
 ]
 
