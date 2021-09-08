@@ -23,14 +23,13 @@ async def vedant_computers(query):
     for product in soup.select(".main-products.product-grid .caption"):
         results.append(
             {
-                "store": "vedant",
                 "name": product.select_one(".name a").get_text(),
                 "link": product.select_one(".name a")["href"].split("?", 1)[0],
                 "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
             }
         )
 
-    return results
+    return {"store": "Vedant Computers", "results": results}
 
 
 async def md_computers(query):
@@ -43,14 +42,13 @@ async def md_computers(query):
     for product in soup.select(".product-item-container .right-block.right-b"):
         results.append(
             {
-                "store": "md",
                 "name": product.select_one("h4 a").get_text(),
                 "link": product.select_one("h4 a")["href"].split("?", 1)[0],
                 "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
             }
         )
 
-    return results
+    return {"store": "MD Computers", "results": results}
 
 
 async def prime_abgb(query):
@@ -70,14 +68,12 @@ async def prime_abgb(query):
             }
         )
 
-    return results
+    return {"store": "Prime ABGB", "results": results}
 
 
 async def it_depot(query):
     search_query = query.replace(" ", "+")
-    soup = get_soup(
-        f"https://www.theitdepot.com/search.html?keywords={search_query}"
-    )
+    soup = get_soup(f"https://www.theitdepot.com/search.html?keywords={search_query}")
     results = []
     for product in soup.select(".product-list .product-item"):
 
@@ -85,11 +81,10 @@ async def it_depot(query):
         if not product.find_all("img", {"class": "img-gray"}):
             results.append(
                 {
-                    "store": "the_it_depot",
                     "name": product.select_one(".product_title a").get_text(strip=True),
                     "link": f"https://www.theitdepot.com/{product.select_one('.product_title a')['href']}",
                     "price": f"₹{product.select_one('.card-text strong').get_text(strip=True)}",
                 }
             )
 
-    return results
+    return {"store": "the_it_depot", "results": results}

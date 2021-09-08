@@ -68,7 +68,9 @@ async def search(search_query: str):
         ]
         search_results = await asyncio.gather(*functions)
 
-        # search_results is a list of lists. The code below flattens it out.
-        return [result for sublist in search_results for result in sublist]
+        return {
+            "length": sum([len(item["results"]) for item in search_results]),
+            "results": search_results
+        }
     else:
         return {"error": "No search string supplied."}
