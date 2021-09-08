@@ -25,7 +25,10 @@ async def vedant_computers(query):
             {
                 "name": product.select_one(".name a").get_text(),
                 "link": product.select_one(".name a")["href"].split("?", 1)[0],
-                "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
+                "price": int(product.select_one(".price")
+                .get_text(strip=True)
+                .split("₹")[-1]
+                .replace(",", "")),
             }
         )
 
@@ -43,7 +46,10 @@ async def md_computers(query):
             {
                 "name": product.select_one("h4 a").get_text(),
                 "link": product.select_one("h4 a")["href"].split("?", 1)[0],
-                "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
+                "price": int(product.select_one(".price")
+                .get_text(strip=True)
+                .split("₹")[-1]
+                .replace(",", "")),
             }
         )
 
@@ -62,7 +68,10 @@ async def prime_abgb(query):
             {
                 "name": product.select_one(".product-name a").get_text(),
                 "link": product.select_one(".product-name a")["href"],
-                "price": f"₹{product.select_one('.price').get_text(strip=True).split('₹')[-1]}",
+                "price": int(product.select_one(".price")
+                .get_text(strip=True)
+                .split("₹")[-1]
+                .replace(",", "")),
             }
         )
 
@@ -81,7 +90,9 @@ async def it_depot(query):
                 {
                     "name": product.select_one(".product_title a").get_text(strip=True),
                     "link": f"https://www.theitdepot.com/{product.select_one('.product_title a')['href']}",
-                    "price": f"₹{product.select_one('.card-text strong').get_text(strip=True)}",
+                    "price": int(product.select_one(".card-text strong").get_text(
+                        strip=True
+                    )),
                 }
             )
 
