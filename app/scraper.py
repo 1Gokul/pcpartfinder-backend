@@ -85,4 +85,4 @@ async def it_depot(query):
                 }
             )
 
-    return {"store": "the_it_depot", "results": results}
+    return {"store": "The IT Depot", "results": results}
