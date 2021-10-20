@@ -78,3 +78,8 @@ async def search(search_query: str):
             "content": {"error": "No search string supplied."},
         }
 
+
+@app.post("/crawl", tags=["crawl"])
+async def crawl():
+    os.system("python crawler.py")
+    return None
