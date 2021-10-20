@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
+import os
 
 from scraper import it_depot, md_computers, prime_abgb, vedant_computers
 
@@ -18,6 +19,8 @@ The PCPartFinder API scrapes and finds information about the availability of dif
 tags_metadata = [
     {"name": "search", "description": "Search and scrape information from the sources."}
 ]
+
+
 
 app = FastAPI(
     title="PCPartFinder",
@@ -62,7 +65,6 @@ async def search(search_query: str):
             vedant_computers(search_query),
             md_computers(search_query),
             prime_abgb(search_query),
-            it_depot(search_query),
         ]
         search_results = await asyncio.gather(*functions)
 
@@ -75,3 +77,4 @@ async def search(search_query: str):
             "n_results": -1,
             "content": {"error": "No search string supplied."},
         }
+

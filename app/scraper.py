@@ -7,11 +7,21 @@ headers = {
 
 
 def get_soup(link):
-    response = requests.get(
-        link,
-        headers=headers,
-    )
-    return BeautifulSoup(response.content, "lxml")
+    response = []
+
+    try: 
+        response = requests.get(
+            link,
+            headers=headers,
+        )
+    except Exception as ex:
+        template = "Exception of type {0} occurred. Arguments:\n{1!r}"
+        message = template.format(type(ex).__name__, ex.args)
+        print(message)
+        return None
+    else:
+        return BeautifulSoup(response.content, "lxml")
+    
 
 
 async def vedant_computers(query):
