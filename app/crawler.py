@@ -1,9 +1,9 @@
 from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
 
 from part_scraper.spiders.vedant import VedantSpider
 
-
-process = CrawlerProcess()
+process = CrawlerProcess(get_project_settings())
 
 if __name__=="__main__":
     process.crawl(VedantSpider)

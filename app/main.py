@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import os
+from dotenv import load_dotenv
 
 from scraper import it_depot, md_computers, prime_abgb, vedant_computers
 
@@ -20,7 +21,8 @@ tags_metadata = [
     {"name": "search", "description": "Search and scrape information from the sources."}
 ]
 
-
+# Load environment variables from either a .env file(dev) or from the environment(production)
+load_dotenv()
 
 app = FastAPI(
     title="PCPartFinder",

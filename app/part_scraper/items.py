@@ -3,16 +3,21 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
-from itemloaders.processors import MapCompose
-import scrapy
+from itemloaders.processors import MapCompose, TakeFirst
+from scrapy.item import Item, Field
+
 
 def format_price(price):
-    return int(price.replace(",", "").replace("₹", ""))
+    return int(float(price.replace(",", "").replace("₹", "")))
 
-class PartScraperItem(scrapy.Item):
+
+class PartScraperItem(Item):
+    
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    name = scrapy.Field()
-    price = scrapy.Field(input_processor = MapCompose(format_price))
-    url = scrapy.Field()
+    name = Field(output_processor=TakeFirst())
+    price = Field(
+        input_processor=MapCompose(format_price), output_processor=TakeFirst()
+    )
+    url = Field(output_processor=TakeFirst())
+    store = Field(output_processor=TakeFirst())
     pass
