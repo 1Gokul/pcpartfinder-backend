@@ -67,7 +67,9 @@ class PartScraperPipeline(object):
                 cnxn.commit()
 
             except Exception as ex:
-                print("EXCEPTION- ", ex)
+                template = "Exception of type {0} occurred. Arguments:\n{1!r}"
+                message = template.format(type(ex).__name__, ex.args)
+                print(message)
                 cnxn.rollback()
 
         return item
