@@ -17,8 +17,8 @@ urls = [
 ]
 
 
-class VedantSpider(scrapy.Spider):
-    name = "vedant"
+class VedantComputersSpider(scrapy.Spider):
+    name = "vedant_comptuers"
     allowed_domains = ["vedantcomputers.com/pc-components/"]
     start_urls = [
         f"https://www.vedantcomputers.com/pc-components/{url}?limit=999" for url in urls
@@ -33,7 +33,7 @@ class VedantSpider(scrapy.Spider):
             loader.add_css("name", "div.name a::text")
             loader.add_css("price", ".price-normal::text")
             loader.add_css("url", "div.name a::attr(href)")
-            loader.add_value("store", "VedantComputers")
+            loader.add_value("store", "Vedant_Computers")
 
             yield loader.load_item()
 

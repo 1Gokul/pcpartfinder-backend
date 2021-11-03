@@ -5,11 +5,11 @@
 
 
 # useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
 import pyodbc
 import os
 
-STORES=["VedantComputers"]
+STORES = ["Vedant_Computers", "MD_Computers"]
+
 
 class PartScraperPipeline(object):
     def __init__(self):
@@ -33,13 +33,14 @@ class PartScraperPipeline(object):
                 # If no table of that particular name exists, create one.
                 if not cursor.tables(table=store, tableType="TABLE").fetchone():
                     cursor.execute(
-                        (f"CREATE TABLE {store} ("
-                        "ID INT PRIMARY KEY IDENTITY(1,1),"
-                        "Name VARCHAR(100) NOT NULL, "
-                        "Price INT, "
-                        "URL VARCHAR(1000), " 
-                        "StoreName VARCHAR(50), "
-                        ");"
+                        (
+                            f"CREATE TABLE {store} ("
+                            "ID INT PRIMARY KEY IDENTITY(1,1),"
+                            "Name VARCHAR(300) NOT NULL, "
+                            "Price INT, "
+                            "URL VARCHAR(1000), "
+                            "StoreName VARCHAR(50), "
+                            ");"
                         )
                     )
 
@@ -62,7 +63,7 @@ class PartScraperPipeline(object):
                     item["url"],
                     item["store"],
                 )
-    
+
                 cnxn.commit()
 
             except Exception as ex:
