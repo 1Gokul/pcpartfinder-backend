@@ -1,7 +1,7 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from part_scraper.spiders.vedant import VedantSpider
+from part_scraper.spiders.vedant_computers import VedantSpider
 
 process = CrawlerProcess(get_project_settings())
 
