@@ -5,10 +5,11 @@
 
 
 # useful for handling different item types with a single interface
+
 import pyodbc
 import os
 
-STORES = ["Vedant_Computers", "MD_Computers"]
+STORES = ["Vedant_Computers", "MD_Computers", "Prime_ABGB"]
 
 
 class PartScraperPipeline(object):

@@ -29,7 +29,7 @@ class VedantComputersSpider(scrapy.Spider):
         items = response.css(".main-products.product-grid .caption")
 
         for item in items:
-            # VedantComputers adds the "limit" argument to all the links for some reason. 
+            # VedantComputers adds the "limit" argument to all the links in the search results for some reason. 
             # This strips them from the link.
             url = item.css("div.name a::attr(href)").get().replace(f"&limit={PRODUCTS_LIMIT}", "")
 
