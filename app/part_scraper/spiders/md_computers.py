@@ -1,27 +1,26 @@
 import scrapy
-from scrapy import selector
 from scrapy.loader import ItemLoader
 
 from part_scraper.items import PartScraperItem
 
-urls = [
+CATEGORIES = [
     "peripherals",
-    # "cabinet",
-    # "smps",
-    # "cooling-system",
-    # "storage",
-    # "monitors",
-    # "graphics-card",
-    # "memory",
-    # "processor",
-    # "motherboards",
+    "cabinet",
+    "smps",
+    "cooling-system",
+    "storage",
+    "monitors",
+    "graphics-card",
+    "memory",
+    "processor",
+    "motherboards",
 ]
 
 
 class MDComputersSpider(scrapy.Spider):
     name = "md_computers"
     allowed_domains = ["mdcomputers.in"]
-    start_urls = [f"https://mdcomputers.in/{url}" for url in urls]
+    start_urls = [f"https://mdcomputers.in/{category}" for category in CATEGORIES]
 
     def parse(self, response):
 

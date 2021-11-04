@@ -1,10 +1,9 @@
 import scrapy
-from scrapy import selector
 from scrapy.loader import ItemLoader
 
 from part_scraper.items import PartScraperItem
 
-urls = [
+CATEGORIES = [
     "peripherals",
     "networking",
     "power-supply",
@@ -22,7 +21,7 @@ class VedantComputersSpider(scrapy.Spider):
     name = "vedant_comptuers"
     allowed_domains = ["vedantcomputers.com/pc-components/"]
     start_urls = [
-        f"https://www.vedantcomputers.com/pc-components/{url}?limit={PRODUCTS_LIMIT}" for url in urls
+        f"https://www.vedantcomputers.com/pc-components/{category}?limit={PRODUCTS_LIMIT}" for category in CATEGORIES
     ]
 
     def parse(self, response):
@@ -42,5 +41,5 @@ class VedantComputersSpider(scrapy.Spider):
 
             yield loader.load_item()
 
-        for link in response.css(".ias-trigger.ias-trigger-next a"):
-            yield response.follow(link, callback=self.parse)
+        # for link in response.css(".ias-trigger.ias-trigger-next a"):
+        #     yield response.follow(link, callback=self.parse)
