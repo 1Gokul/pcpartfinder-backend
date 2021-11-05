@@ -9,7 +9,7 @@
 import pyodbc
 import os
 
-STORES = ["Vedant_Computers", "MD_Computers", "Prime_ABGB"]
+STORES = ["Vedant_Computers", "MD_Computers", "Prime_ABGB", "IT_Depot"]
 
 
 class PartScraperPipeline(object):

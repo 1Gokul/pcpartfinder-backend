@@ -15,20 +15,7 @@ CATEGORIES = [
     "power-supplies-smps",
     "keyboard",
     "mouse-mice",
-    "mouse-pad",
     "gaming-headset",
-    "gaming-chair",
-    "gaming-wireless-routers",
-    "mic",
-    "server-processor",
-    "server-motherboard",
-    "super-server",
-    "server-chassis",
-    "server-graphic-card",
-    "server-memory",
-    "enterprise-server-hard-drive",
-    "enterprise-ssd",
-    "network-attached-storage-nas",
 ]
 
 
