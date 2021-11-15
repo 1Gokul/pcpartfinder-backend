@@ -41,6 +41,6 @@ class PrimeABGBSpider(scrapy.Spider):
 
 
         # Goes to the next page using the pagination links at the bottom
-        next_page_url = response.css(".page-numbers > li:nth-last-child(1) > a::attr(href)").extract_first()
+        next_page_url = response.css(".page-numbers > li:nth-last-child(1) > a::attr(href)").get()
         if next_page_url:
             yield scrapy.Request(url=next_page_url, callback=self.parse)

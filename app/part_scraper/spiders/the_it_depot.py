@@ -39,10 +39,10 @@ class ITDepotSpider(scrapy.Spider):
             # The IT Depot website does not have an option to filter out out-of-stock items. :shrug:
             out_of_stock = item.css(
                 "div.product-details span.text-danger::text"
-            ).extract_first()
+            ).get()
 
             if not out_of_stock:
-                url = item.css("div.product_title a::attr(href)").extract_first()
+                url = item.css("div.product_title a::attr(href)").get()
 
                 loader = ItemLoader(item=PartScraperItem(), selector=item)
                 loader.add_css("name", "div.product_title a::text")
@@ -74,7 +74,7 @@ class ITDepotSpider(scrapy.Spider):
             # Get the amount of pages in the search results
             last_page_no = response.css(
                 ".pagination > li:nth-last-child(3) > a::text"
-            ).extract_first()
+            ).get()
 
             # Get the current category of the items.
             category = (
