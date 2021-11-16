@@ -17,11 +17,13 @@ CATEGORIES = [
 
 PRODUCTS_LIMIT = 999
 
+
 class VedantComputersSpider(scrapy.Spider):
     name = "vedant_comptuers"
     allowed_domains = ["vedantcomputers.com/pc-components/"]
     start_urls = [
-        f"https://www.vedantcomputers.com/pc-components/{category}?limit={PRODUCTS_LIMIT}" for category in CATEGORIES
+        f"https://www.vedantcomputers.com/pc-components/{category}?limit={PRODUCTS_LIMIT}"
+        for category in CATEGORIES
     ]
 
     def parse(self, response):
@@ -29,9 +31,14 @@ class VedantComputersSpider(scrapy.Spider):
         items = response.css(".main-products.product-grid .caption")
 
         for item in items:
-            # VedantComputers adds the "limit" argument to all the links in the search results for some reason. 
+            # VedantComputers adds the "limit" argument to all the links in the search results for some reason.
             # This strips them from the link.
-            url = item.css("div.name a::attr(href)").get().replace(f"&limit={PRODUCTS_LIMIT}", "")
+            url = (
+                item.css("div.name a::attr(href)")
+                .get()
+                .replace(f"&limit={PRODUCTS_LIMIT}", "")
+                .replace(f"?limit={PRODUCTS_LIMIT}", "")
+            )
 
             loader = ItemLoader(item=PartScraperItem(), selector=item)
             loader.add_css("name", "div.name a::text")
