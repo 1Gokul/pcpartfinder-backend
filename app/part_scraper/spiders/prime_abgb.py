@@ -4,18 +4,18 @@ from scrapy.loader import ItemLoader
 from part_scraper.items import PartScraperItem
 
 CATEGORIES = [
-    "cpu-processor",
-    "motherboards",
-    "ram-memory",
-    "cpu-cooler",
-    "internal-hard-drive",
+    # "cpu-processor",
+    # "motherboards",
+    # "ram-memory",
+    # "cpu-cooler",
+    # "internal-hard-drive",
     "graphic-card-gpu",
-    "pc-cases-cabinet",
-    "led-monitors",
-    "power-supplies-smps",
-    "keyboard",
-    "mouse-mice",
-    "gaming-headset",
+    # "pc-cases-cabinet",
+    # "led-monitors",
+    # "power-supplies-smps",
+    # "keyboard",
+    # "mouse-mice",
+    # "gaming-headset",
 ]
 
 

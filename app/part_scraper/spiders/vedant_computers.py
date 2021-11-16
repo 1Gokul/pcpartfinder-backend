@@ -4,15 +4,15 @@ from scrapy.loader import ItemLoader
 from part_scraper.items import PartScraperItem
 
 CATEGORIES = [
-    "peripherals",
-    "networking",
-    "power-supply",
-    "fans-and-cooling",
-    "storage",
-    "monitor",
+    # "peripherals",
+    # "networking",
+    # "power-supply",
+    # "fans-and-cooling",
+    # "storage",
+    # "monitor",
     "graphics-card",
-    "memory",
-    "processor",
+    # "memory",
+    # "processor",
 ]
 
 PRODUCTS_LIMIT = 999

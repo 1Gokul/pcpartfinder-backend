@@ -5,19 +5,19 @@ from scrapy.loader import ItemLoader
 from part_scraper.items import PartScraperItem
 
 CATEGORIES = [
-    "Computer+Cabinets_C5",
-    "Cooling+Devices_C10",
+    # "Computer+Cabinets_C5",
+    # "Cooling+Devices_C10",
     "Graphic+Cards_C45",
-    "Hard+Drives+HDD_C12",
-    "Keyboards_C3",
-    "RAM+(Memory)_C6",
-    "Monitor_C7",
-    "Mouse+(Mice)_C1",
-    "PSU+(+Power+Supply+Units)_C14",
-    "Processors_C30",
-    "Solid+State+Drive+(SSD)_C93",
-    "Headphones_C19",
-    "Gaming+Headphones_C9SU16",
+    # "Hard+Drives+HDD_C12",
+    # "Keyboards_C3",
+    # "RAM+(Memory)_C6",
+    # "Monitor_C7",
+    # "Mouse+(Mice)_C1",
+    # "PSU+(+Power+Supply+Units)_C14",
+    # "Processors_C30",
+    # "Solid+State+Drive+(SSD)_C93",
+    # "Headphones_C19",
+    # "Gaming+Headphones_C9SU16",
 ]
 
 

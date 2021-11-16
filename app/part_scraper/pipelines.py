@@ -33,8 +33,12 @@ class PartScraperPipeline(object):
                 (TABLE_NAME,),
             )
 
-            # If no table exists, create one.
-            if not cursor.fetchone()[0]:
+            # If a table exists, remove the old data inside.
+            if cursor.fetchone()[0]:
+                cursor.execute(f"TRUNCATE TABLE {TABLE_NAME}")
+
+            # Else if no table exists, create one.
+            else:
                 cursor.execute(
                     (
                         f"CREATE TABLE {TABLE_NAME} ("
@@ -58,7 +62,6 @@ class PartScraperPipeline(object):
             # While the connection is open, add the item's data.
             cursor = conn.cursor()
             try:
-                print(type(item["name"]))
                 cursor.execute(
                     f"INSERT INTO {TABLE_NAME} (name, price, url, store) VALUES (%s, %s, %s,%s)",
                     (

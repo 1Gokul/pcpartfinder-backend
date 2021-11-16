@@ -4,16 +4,16 @@ from scrapy.loader import ItemLoader
 from part_scraper.items import PartScraperItem
 
 CATEGORIES = [
-    "peripherals",
-    "cabinet",
-    "smps",
-    "cooling-system",
-    "storage",
-    "monitors",
+    # "peripherals",
+    # "cabinet",
+    # "smps",
+    # "cooling-system",
+    # "storage",
+    # "monitors",
     "graphics-card",
-    "memory",
-    "processor",
-    "motherboards",
+    # "memory",
+    # "processor",
+    # "motherboards",
 ]
 
 

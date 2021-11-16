@@ -3,11 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from dotenv import load_dotenv
 from datetime import datetime
-import asyncio
 import json
 import os
 
-from scraper import md_computers, prime_abgb, vedant_computers
 import data_manager
 
 description = """
@@ -67,17 +65,22 @@ async def root():
 @app.get("/api/search/{search_query}", tags=["search"])
 async def search(search_query: str):
     if search_query != "null":
-        functions = [
-            vedant_computers(search_query),
-            md_computers(search_query),
-            prime_abgb(search_query),
-        ]
-        search_results = await asyncio.gather(*functions)
+        search_results = await data_manager.search(search_query)
 
-        return {
-            "n_results": sum([len(item["results"]) for item in search_results]),
-            "content": search_results,
-        }
+        return (
+            {
+                "n_results": sum(
+                    [
+                        len(value)
+                        for result in search_results
+                        for value in result.values()
+                    ]
+                ),
+                "content": search_results,
+            }
+            if search_results
+            else {"error": "No results found. Try another search string."}
+        )
     else:
         return {
             "n_results": -1,
@@ -99,16 +102,14 @@ async def crawl(request: Request):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="No credentials supplied."
         )
-        
+
     else:
         # If the update_code exists and it matches, start crawling and update the database.
         if secret_key == os.getenv("UPDATE_VERIFICATION_CODE"):
             data_manager.crawl_data()
-            return {
-                "success": f"Updating database... Time: {datetime.now()}"
-            }
-        
-        # Else if it doesn't match, return a "Forbidden" response. 
+            return {"success": f"Updating database... Time: {datetime.now()}"}
+
+        # Else if it doesn't match, return a "Forbidden" response.
         else:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
