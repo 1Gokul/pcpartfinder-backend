@@ -1,10 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-import asyncio
-import subprocess
+from starlette.requests import Request
 from dotenv import load_dotenv
+from datetime import datetime
+import asyncio
+import json
+import os
 
-from scraper import it_depot, md_computers, prime_abgb, vedant_computers
+from scraper import md_computers, prime_abgb, vedant_computers
+import data_manager
 
 description = """
 The PCPartFinder API scrapes and finds information about the availability of different PC components in India.
@@ -81,7 +85,32 @@ async def search(search_query: str):
         }
 
 
-@app.post("/crawl", tags=["crawl"])
-async def crawl():
-    subprocess.Popen("python " + "crawler.py", shell=True)
-    return None
+@app.post("/crawl", tags=["crawler"])
+async def crawl(request: Request):
+    secret_key = None
+
+    # Check if a request body exists and if there exists a value for the key "update_code"
+    try:
+        body = await request.json()
+        secret_key = body["update_code"]
+
+    # Return a "Bad Request" response if there is no update_code supplied.
+    except (json.decoder.JSONDecodeError, KeyError):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="No credentials supplied."
+        )
+        
+    else:
+        # If the update_code exists and it matches, start crawling and update the database.
+        if secret_key == os.getenv("UPDATE_VERIFICATION_CODE"):
+            data_manager.crawl_data()
+            return {
+                "success": f"Updating database... Time: {datetime.now()}"
+            }
+        
+        # Else if it doesn't match, return a "Forbidden" response. 
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Incorrect credentials supplied.",
+            )
