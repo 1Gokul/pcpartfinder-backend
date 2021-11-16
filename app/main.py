@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
-import os
+import subprocess
 from dotenv import load_dotenv
 
 from scraper import it_depot, md_computers, prime_abgb, vedant_computers
@@ -83,5 +83,5 @@ async def search(search_query: str):
 
 @app.post("/crawl", tags=["crawl"])
 async def crawl():
-    os.system("python crawler.py")
+    subprocess.Popen("python " + "crawler.py", shell=True)
     return None
