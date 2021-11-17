@@ -37,9 +37,7 @@ class ITDepotSpider(scrapy.Spider):
 
             # Don't add the item to the database if it is listed as "Out of Stock"
             # The IT Depot website does not have an option to filter out out-of-stock items. :shrug:
-            out_of_stock = item.css(
-                "div.product-details span.text-danger::text"
-            ).get()
+            out_of_stock = item.css("div.product-details span.text-danger::text").get()
 
             if not out_of_stock:
                 url = item.css("div.product_title a::attr(href)").get()
@@ -62,19 +60,21 @@ class ITDepotSpider(scrapy.Spider):
         So this spider sends requests to the same URL and scrapes the data from the returned HTML.
         """
 
-        # Check if the response has any metadata passed in by previous requests. 
-        page_no = response.meta.get("page_no") 
+        # Check if the response has any metadata passed in by previous requests.
+        page_no = response.meta.get("page_no")
+        total_pages = response.meta.get("total_pages")
         next_page_url_prefix = response.meta.get("url_prefix")
         next_page_url_suffix = response.meta.get("url_suffix")
 
-        # If it doesn't, it means the crawler has scraped the first page of the category. 
+        # If it doesn't, it means the crawler has scraped the first page of the category.
         # It will then have to create the metadata to pass to further requests.
         if not page_no:
 
             # Get the amount of pages in the search results
-            last_page_no = response.css(
-                ".pagination > li:nth-last-child(3) > a::text"
-            ).get()
+            total_pages = int(
+                response.css(".pagination > li:nth-last-child(3) > a::text").get()
+            )
+            total_pages = int(total_pages) if total_pages else 0
 
             # Get the current category of the items.
             category = (
@@ -97,20 +97,21 @@ class ITDepotSpider(scrapy.Spider):
             )
             # The part of the URL after the page number
             next_page_url_suffix = (
-                f"&fftotal=5&total_pages={last_page_no}&PageScrollProcess=No&PageFinished=No&filter=true",
+                f"&PageScrollProcess=No&PageFinished=No&filter=true",
             )
 
         # Increment the current page number to go to the next page.
         page_no += 1
-        
-        sleep(5)
 
-        yield scrapy.Request(
-            url=f"{next_page_url_prefix}{page_no}{next_page_url_suffix}",
-            callback=self.parse,
-            meta={
-                "url_prefix": next_page_url_prefix,
-                "page_no": page_no,
-                "url_suffix": next_page_url_suffix,
-            },
-        )
+        if page_no <= total_pages:
+
+            yield scrapy.Request(
+                url=f"{next_page_url_prefix}{page_no}&fftotal=5&total_pages={total_pages}{next_page_url_suffix}",
+                callback=self.parse,
+                meta={
+                    "url_prefix": next_page_url_prefix,
+                    "page_no": page_no,
+                    "total_pages": total_pages,
+                    "url_suffix": next_page_url_suffix,
+                },
+            )
