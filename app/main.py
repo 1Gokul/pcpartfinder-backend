@@ -95,7 +95,7 @@ async def crawl(request: Request):
     # Check if a request body exists and if there exists a value for the key "update_code"
     try:
         body = await request.json()
-        secret_key = body["update_code"]
+        secret_key = body["update-code"]
 
     # Return a "Bad Request" response if there is no update_code supplied.
     except (json.decoder.JSONDecodeError, KeyError):
