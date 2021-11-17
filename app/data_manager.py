@@ -18,7 +18,7 @@ async def search(query):
     """
 
     CONNECTION_STRING = (
-        f"host={os.getenv('SERVER')} user={os.getenv('USERID')} password={os.getenv('PASSWORD')} "
+        f"host={os.getenv('HOST')} user={os.getenv('USERID')} password={os.getenv('PASSWORD')} "
         f"dbname={os.getenv('DATABASE_NAME')} sslmode={os.getenv('SSLMODE')}"
     )
 
