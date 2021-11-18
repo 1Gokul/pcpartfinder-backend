@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from dotenv import load_dotenv
@@ -89,7 +89,7 @@ async def search(search_query: str):
 
 
 @app.post("/crawl", tags=["crawler"])
-async def crawl(request: Request):
+async def crawl(request: Request, background_tasks: BackgroundTasks):
     secret_key = None
 
     # Check if a request body exists and if there exists a value for the key "update_code"
@@ -106,7 +106,10 @@ async def crawl(request: Request):
     else:
         # If the update_code exists and it matches, start crawling and update the database.
         if secret_key == os.getenv("UPDATE_VERIFICATION_CODE"):
-            data_manager.crawl_data()
+
+            # Perform the crawl in the background
+            background_tasks.add_task(data_manager.crawl_data)
+            
             return {"success": f"Updating database... Time: {datetime.now()}"}
 
         # Else if it doesn't match, return a "Forbidden" response.
