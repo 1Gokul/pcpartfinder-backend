@@ -45,7 +45,7 @@ app = FastAPI(
 
 # CORS settings
 origins = [
-    "https://pcpartfinder.vercel.app",
+    os.getenv("CORS_ALLOWED_ORIGIN"),
 ]
 
 app.add_middleware(
@@ -64,21 +64,17 @@ async def root():
 
 @app.get("/api/search/{search_query}", tags=["search"])
 async def search(search_query: str):
+
     if search_query != "null":
-        search_results = await data_manager.search(search_query)
+
+        results = await data_manager.search(search_query)
 
         return (
             {
-                "n_results": sum(
-                    [
-                        len(value)
-                        for result in search_results
-                        for value in result.values()
-                    ]
-                ),
-                "content": search_results,
+                "n_results": sum([len(store["store_results"]) for store in results]),
+                "content": results,
             }
-            if search_results
+            if results
             else {"error": "No results found. Try another search string."}
         )
     else:
@@ -109,7 +105,7 @@ async def crawl(request: Request, background_tasks: BackgroundTasks):
 
             # Perform the crawl in the background
             background_tasks.add_task(data_manager.crawl_data)
-            
+
             return {"success": f"Updating database... Time: {datetime.now()}"}
 
         # Else if it doesn't match, return a "Forbidden" response.

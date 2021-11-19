@@ -41,5 +41,10 @@ async def search(query):
             message = template.format(type(ex).__name__, ex.args)
             print(message)
 
-    # result[0] because all the results are enclosed in extra lists in the query result.
-    return [result[0] for result in results]
+    # Format the result into an easily accessible dict
+    # (result[0] because the Postgres query result encloses each store's items in extra lists.)
+    return [
+        {"store_name": key, "store_results": value}
+        for result in results
+        for key, value in result[0].items()
+    ]
