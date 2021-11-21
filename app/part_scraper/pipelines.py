@@ -6,7 +6,7 @@
 
 # useful for handling different item types with a single interface
 
-import psycopg2
+import pyodbc
 import os
 
 TABLE_NAME = "crawler_data"
@@ -19,37 +19,31 @@ class PartScraperPipeline(object):
         """
 
         self.connection_string = (
-            f"host={os.getenv('HOST')} user={os.getenv('USERID')} password={os.getenv('PASSWORD')} "
-            f"dbname={os.getenv('DATABASE_NAME')} sslmode={os.getenv('SSLMODE')}"
+            f"Driver={os.getenv('DRIVER')}; Server={os.getenv('HOST')}; UID={os.getenv('USERID')};"
+            f"PWD={os.getenv('PASSWORD')}; Database={os.getenv('DATABASE_NAME')};"
         )
 
-        with psycopg2.connect(self.connection_string) as conn:
+        with pyodbc.connect(self.connection_string) as conn:
 
             cursor = conn.cursor()
 
-            # Check if a table by the name {TABLE_NAME} exists.
-            cursor.execute(
-                "select exists(select * from information_schema.tables where table_name=%s)",
-                (TABLE_NAME,),
-            )
-
-            # If a table exists, remove the old data inside.
-            if cursor.fetchone()[0]:
+            # If no table of that particular name exists, create one.
+            if cursor.tables(table=TABLE_NAME, tableType="TABLE").fetchone():
                 cursor.execute(f"TRUNCATE TABLE {TABLE_NAME}")
-
-            # Else if no table exists, create one.
+               
             else:
                 cursor.execute(
                     (
                         f"CREATE TABLE {TABLE_NAME} ("
-                        "id SERIAL NOT NULL PRIMARY KEY,"
-                        "name VARCHAR(300) NOT NULL,"
-                        "price INTEGER NOT NULL,"
-                        "url VARCHAR(1000) NOT NULL,"
-                        "store VARCHAR(50) NOT NULL"
+                        "ID INT PRIMARY KEY IDENTITY(1,1),"
+                        "Name VARCHAR(300) NOT NULL, "
+                        "Price INT, "
+                        "URL VARCHAR(1000), "
+                        "StoreName VARCHAR(50), "
                         ");"
                     )
                 )
+
 
     def process_item(self, item, spider):
         """
@@ -57,23 +51,25 @@ class PartScraperPipeline(object):
         """
 
         # Establish a connection
-        with psycopg2.connect(self.connection_string) as conn:
+        with pyodbc.connect(self.connection_string) as conn:
 
             # While the connection is open, add the item's data.
             cursor = conn.cursor()
             try:
                 cursor.execute(
-                    f"INSERT INTO {TABLE_NAME} (name, price, url, store) VALUES (%s, %s, %s,%s)",
-                    (
-                        item["name"],
-                        item["price"],
-                        item["url"],
-                        item["store"],
-                    ),
+                    f"INSERT INTO {TABLE_NAME}(Name, Price, URL, StoreName) VALUES (?, ?, ?, ?)",
+                    item["name"],
+                    item["price"],
+                    item["url"],
+                    item["store"],
                 )
+
+                conn.commit()
+
             except Exception as ex:
                 template = "Exception of type {0} occurred. Arguments:\n{1!r}"
                 message = template.format(type(ex).__name__, ex.args)
                 print(message)
+                conn.rollback()
 
         return item
