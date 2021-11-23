@@ -1,7 +1,6 @@
 import subprocess
 import pyodbc
 import os
-from itertools import groupby
 
 TABLE_NAME = "crawler_data"
 RESULT_KEYS = ["name", "price", "url", "store"]
@@ -12,7 +11,7 @@ def crawl_data():
     """
     Crawl the data and insert the info into a database.
     """
-    subprocess.call("python " + "crawler.py", shell=True)
+    subprocess.call("python3 " + "crawler.py", shell=True)
 
 
 async def search(query):
