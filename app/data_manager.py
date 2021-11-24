@@ -4,7 +4,7 @@ import os
 
 TABLE_NAME = "crawler_data"
 RESULT_KEYS = ["name", "price", "url", "store"]
-STORES = ["Vedant_Computers", "MD_Computers", "Prime_ABGB", "IT_Depot"]
+STORES = ["Vedant_Computers", "MD_Computers", "Prime_ABGB", "IT_Depot", "PC_Shop"]
 
 
 def crawl_data():
