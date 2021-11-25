@@ -11,13 +11,9 @@ from part_scraper.spiders.pc_shop import PCShopSpider
 
 process = CrawlerProcess(get_project_settings())
 
-Spiders = [VedantComputersSpider, MDComputersSpider, PrimeABGBSpider, ITDepotSpider]
+SPIDERS = [VedantComputersSpider, MDComputersSpider, PrimeABGBSpider, ITDepotSpider, PCShopSpider, PCStudioSpider]
 
 if __name__ == "__main__":
-    process.crawl(VedantComputersSpider)
-    process.crawl(MDComputersSpider)
-    process.crawl(PrimeABGBSpider)
-    process.crawl(ITDepotSpider)
-    process.crawl(PCShopSpider)
-    process.crawl(PCStudioSpider)
+    for spider in SPIDERS:
+        process.crawl(spider)
     process.start()
