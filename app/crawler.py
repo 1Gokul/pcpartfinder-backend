@@ -5,6 +5,7 @@ from part_scraper.spiders.vedant_computers import VedantComputersSpider
 from part_scraper.spiders.md_computers import MDComputersSpider
 from part_scraper.spiders.the_it_depot import ITDepotSpider
 from part_scraper.spiders.prime_abgb import PrimeABGBSpider
+from part_scraper.spiders.pc_studio import PCStudioSpider
 from part_scraper.spiders.pc_shop import PCShopSpider
 
 
@@ -18,4 +19,5 @@ if __name__ == "__main__":
     process.crawl(PrimeABGBSpider)
     process.crawl(ITDepotSpider)
     process.crawl(PCShopSpider)
+    process.crawl(PCStudioSpider)
     process.start()
