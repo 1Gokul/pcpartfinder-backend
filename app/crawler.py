@@ -5,13 +5,22 @@ from part_scraper.spiders.vedant_computers import VedantComputersSpider
 from part_scraper.spiders.md_computers import MDComputersSpider
 from part_scraper.spiders.the_it_depot import ITDepotSpider
 from part_scraper.spiders.prime_abgb import PrimeABGBSpider
+from part_scraper.spiders.elite_hubs import EliteHubsSpider
 from part_scraper.spiders.pc_studio import PCStudioSpider
 from part_scraper.spiders.pc_shop import PCShopSpider
 
 
 process = CrawlerProcess(get_project_settings())
 
-SPIDERS = [VedantComputersSpider, MDComputersSpider, PrimeABGBSpider, ITDepotSpider, PCShopSpider, PCStudioSpider]
+SPIDERS = [
+    VedantComputersSpider,
+    MDComputersSpider,
+    PrimeABGBSpider,
+    EliteHubsSpider,
+    PCStudioSpider,
+    ITDepotSpider,
+    PCShopSpider,
+]
 
 if __name__ == "__main__":
     for spider in SPIDERS:
