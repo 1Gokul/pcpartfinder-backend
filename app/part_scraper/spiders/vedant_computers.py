@@ -13,6 +13,8 @@ CATEGORIES = [
     "graphics-card",
     # "memory",
     # "processor",
+    # "motherboard",
+    # "cabinet",
 ]
 
 PRODUCTS_LIMIT = 999
