@@ -1,30 +1,20 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from part_scraper.spiders.vedant_computers import VedantComputersSpider
-from part_scraper.spiders.md_computers import MDComputersSpider
-from part_scraper.spiders.national_pc import NationalPCSpider
-from part_scraper.spiders.the_it_depot import ITDepotSpider
-from part_scraper.spiders.prime_abgb import PrimeABGBSpider
-from part_scraper.spiders.elite_hubs import EliteHubsSpider
-from part_scraper.spiders.pc_studio import PCStudioSpider
-from part_scraper.spiders.pc_shop import PCShopSpider
-
-
 process = CrawlerProcess(get_project_settings())
 
 SPIDERS = [
-    VedantComputersSpider,
-    MDComputersSpider,
-    PrimeABGBSpider,
-    EliteHubsSpider,
-    PCStudioSpider,
-    ITDepotSpider,
-    PCShopSpider,
-    NationalPCSpider,
+    "Vedant_Computers",
+    "MD_Computers",
+    "Prime_ABGB",
+    "IT_Depot",
+    "PC_Shop",
+    "PC_Studio",
+    "Elite_Hubs",
+    "National_PC",
 ]
 
 if __name__ == "__main__":
     for spider in SPIDERS:
-        process.crawl(spider)
+        process.crawl(spider.lower())
     process.start()
