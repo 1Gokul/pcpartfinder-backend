@@ -4,7 +4,15 @@ import os
 
 TABLE_NAME = "crawler_data"
 RESULT_KEYS = ["name", "price", "url", "store"]
-STORES = ["Vedant_Computers", "MD_Computers", "Prime_ABGB", "IT_Depot", "PC_Shop"]
+STORES = [
+    "Vedant_Computers",
+    "MD_Computers",
+    "Prime_ABGB",
+    "IT_Depot",
+    "PC_Shop",
+    "PC_Studio",
+    "Elite_Hubs",
+]
 
 
 def crawl_data():
@@ -63,4 +71,8 @@ async def search(query):
             print(message)
 
     # Return the results as an list of dicts
-    return [{"store_name": key, "store_results": value} for key, value in data.items() if len(value)]
+    return [
+        {"store_name": key, "store_results": value}
+        for key, value in data.items()
+        if len(value)
+    ]

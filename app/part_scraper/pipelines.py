@@ -30,7 +30,7 @@ class PartScraperPipeline(object):
             # If no table of that particular name exists, create one.
             if cursor.tables(table=TABLE_NAME, tableType="TABLE").fetchone():
                 cursor.execute(f"TRUNCATE TABLE {TABLE_NAME}")
-               
+
             else:
                 cursor.execute(
                     (
@@ -43,7 +43,6 @@ class PartScraperPipeline(object):
                         ");"
                     )
                 )
-
 
     def process_item(self, item, spider):
         """

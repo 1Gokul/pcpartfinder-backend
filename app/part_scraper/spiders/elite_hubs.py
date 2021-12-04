@@ -22,10 +22,7 @@ CATEGORIES = [
 class EliteHubsSpider(scrapy.Spider):
     name = "elite_hubs"
     allowed_domains = ["elitehubs.com/"]
-    start_urls = [
-        f"https://elitehubs.com/{category}"
-        for category in CATEGORIES
-    ]
+    start_urls = [f"https://elitehubs.com/{category}" for category in CATEGORIES]
 
     def parse(self, response):
 

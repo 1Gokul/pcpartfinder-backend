@@ -12,7 +12,7 @@ def format_price(price):
 
 
 class PartScraperItem(Item):
-    
+
     # define the fields for your item here like:
     name = Field(output_processor=TakeFirst())
     price = Field(

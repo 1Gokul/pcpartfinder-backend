@@ -9,7 +9,7 @@ headers = {
 def get_soup(link):
     response = []
 
-    try: 
+    try:
         response = requests.get(
             link,
             headers=headers,
@@ -21,7 +21,6 @@ def get_soup(link):
         return None
     else:
         return BeautifulSoup(response.content, "lxml")
-    
 
 
 async def vedant_computers(query):
