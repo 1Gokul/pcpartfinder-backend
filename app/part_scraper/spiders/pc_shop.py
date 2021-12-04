@@ -46,7 +46,6 @@ class PCShopSpider(scrapy.Spider):
         
         # Goes to the next page using the pagination links at the bottom
         next_page_url = response.css(".electro-advanced-pagination a.next.page-numbers::attr(href)").get()
-        print("\n\n\n", next_page_url)
         if next_page_url:
             yield scrapy.Request(url=next_page_url, callback=self.parse)
 

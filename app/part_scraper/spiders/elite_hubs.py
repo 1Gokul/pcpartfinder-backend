@@ -30,7 +30,6 @@ class EliteHubsSpider(scrapy.Spider):
     def parse(self, response):
 
         items = response.css("ul#product_listing .item .item-content")
-        print(items)
         for item in items:
             loader = ItemLoader(item=PartScraperItem(), selector=item)
             loader.add_css("name", "h4 a::text")
