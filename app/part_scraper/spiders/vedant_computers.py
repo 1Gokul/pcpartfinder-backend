@@ -21,7 +21,7 @@ PRODUCTS_LIMIT = 999
 
 
 class VedantComputersSpider(scrapy.Spider):
-    name = "vedant_comptuers"
+    name = "vedant_computers"
     allowed_domains = ["vedantcomputers.com/pc-components/"]
     start_urls = [
         f"https://www.vedantcomputers.com/pc-components/{category}?limit={PRODUCTS_LIMIT}"
