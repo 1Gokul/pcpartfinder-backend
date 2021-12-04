@@ -12,6 +12,7 @@ STORES = [
     "PC_Shop",
     "PC_Studio",
     "Elite_Hubs",
+    "National_PC",
 ]
 
 
