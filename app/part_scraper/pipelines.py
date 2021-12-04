@@ -9,7 +9,7 @@
 import pyodbc
 import os
 
-TABLE_NAME = "crawler_data"
+from config import DB_TABLE_NAME
 
 
 class PartScraperPipeline(object):
@@ -28,13 +28,13 @@ class PartScraperPipeline(object):
             cursor = conn.cursor()
 
             # If no table of that particular name exists, create one.
-            if cursor.tables(table=TABLE_NAME, tableType="TABLE").fetchone():
-                cursor.execute(f"TRUNCATE TABLE {TABLE_NAME}")
+            if cursor.tables(table=DB_TABLE_NAME, tableType="TABLE").fetchone():
+                cursor.execute(f"TRUNCATE TABLE {DB_TABLE_NAME}")
 
             else:
                 cursor.execute(
                     (
-                        f"CREATE TABLE {TABLE_NAME} ("
+                        f"CREATE TABLE {DB_TABLE_NAME} ("
                         "ID INT PRIMARY KEY IDENTITY(1,1),"
                         "Name VARCHAR(300) NOT NULL, "
                         "Price INT, "
@@ -56,7 +56,7 @@ class PartScraperPipeline(object):
             cursor = conn.cursor()
             try:
                 cursor.execute(
-                    f"INSERT INTO {TABLE_NAME}(Name, Price, URL, StoreName) VALUES (?, ?, ?, ?)",
+                    f"INSERT INTO {DB_TABLE_NAME}(Name, Price, URL, StoreName) VALUES (?, ?, ?, ?)",
                     item["name"],
                     item["price"],
                     item["url"],

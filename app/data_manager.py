@@ -2,18 +2,7 @@ import subprocess
 import pyodbc
 import os
 
-TABLE_NAME = "crawler_data"
-RESULT_KEYS = ["name", "price", "url", "store"]
-STORES = [
-    "Vedant_Computers",
-    "MD_Computers",
-    "Prime_ABGB",
-    "IT_Depot",
-    "PC_Shop",
-    "PC_Studio",
-    "Elite_Hubs",
-    "National_PC",
-]
+from config import DB_TABLE_NAME, STORES, SCRAPY_ITEM_KEYS
 
 
 def crawl_data():
@@ -39,7 +28,7 @@ async def search(query):
         cursor = conn.cursor()
         try:
             cursor.execute(
-                f"SELECT Name, Price, URL, StoreName FROM {TABLE_NAME} "
+                f"SELECT Name, Price, URL, StoreName FROM {DB_TABLE_NAME} "
                 f"WHERE UPPER(Name) LIKE '%{query.upper()}%' ORDER BY StoreName",
             )
 
@@ -61,7 +50,7 @@ async def search(query):
 
                 for index, value in enumerate(row):
                     # Add the row's column values to the dict
-                    row_item[RESULT_KEYS[index]] = value
+                    row_item[SCRAPY_ITEM_KEYS[index]] = value
 
                 # Add them to the dict specified by the "store" column
                 data[row_item["store"]].append(row_item)
