@@ -64,7 +64,6 @@ class ITDepotSpider(scrapy.Spider):
         page_no = response.meta.get("page_no")
         total_pages = response.meta.get("total_pages")
         next_page_url_prefix = response.meta.get("url_prefix")
-        next_page_url_suffix = response.meta.get("url_suffix")
 
         # If it doesn't, it means the crawler has scraped the first page of the category.
         # It will then have to create the metadata to pass to further requests.
@@ -91,13 +90,7 @@ class ITDepotSpider(scrapy.Spider):
             # The part of the URL before the page number
             next_page_url_prefix = (
                 f"https://www.theitdepot.com/category_filter.php?categoryname={category[0]}&filter-limit=16"
-                f"&filter-orderby=price_asc&filter_listby=Grid&brand_id=&category={category[1]}&subcategory=&clearence=&free_shipping="
-                "&ctotal=5&btotal=21&price_range=300%3B22135&feature_filter0=10&feature_filter1=10&feature_filter2=8"
-                "&feature_filter3=11&feature_filter4=7&pageno="
-            )
-            # The part of the URL after the page number
-            next_page_url_suffix = (
-                f"&PageScrollProcess=No&PageFinished=No&filter=true",
+                f"&category={category[1]}&pageno="
             )
 
         # Increment the current page number to go to the next page.
@@ -106,12 +99,11 @@ class ITDepotSpider(scrapy.Spider):
         if page_no <= total_pages:
 
             yield scrapy.Request(
-                url=f"{next_page_url_prefix}{page_no}&fftotal=5&total_pages={total_pages}{next_page_url_suffix}",
+                url=f"{next_page_url_prefix}{page_no}&total_pages={total_pages}&filter=true",
                 callback=self.parse,
                 meta={
                     "url_prefix": next_page_url_prefix,
                     "page_no": page_no,
                     "total_pages": total_pages,
-                    "url_suffix": next_page_url_suffix,
                 },
             )
