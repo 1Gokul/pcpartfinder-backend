@@ -21,7 +21,10 @@ CATEGORIES = [
 class TechBoozeSpider(scrapy.Spider):
     name = "tech_booze"
     allowed_domains = ["techbooze.in"]
-    start_urls = [f"https://www.techbooze.in/{category}/?stock_status=instock" for category in CATEGORIES]
+    start_urls = [
+        f"https://www.techbooze.in/{category}/?stock_status=instock"
+        for category in CATEGORIES
+    ]
 
     def parse(self, response):
 
