@@ -24,7 +24,7 @@ class NationalPCSpider(scrapy.Spider):
     name = "national_pc"
     allowed_domains = ["nationalpc.in"]
     start_urls = [
-        f"https://nationalpc.in/computer-hardware/computer-components/{category}/limit-{PRODUCTS_LIMIT}?"
+        f"https://nationalpc.in/computer-hardware/computer-components/{category}/in-stock/limit-{PRODUCTS_LIMIT}?"
         for category in SITE_CATEGORIES
     ]
 

@@ -7,6 +7,5 @@ process = CrawlerProcess(get_project_settings())
 
 if __name__ == "__main__":
     for spider in STORES:
-        if spider == "National_PC":
-            process.crawl(spider.lower())
+        process.crawl(spider.lower())
     process.start()
