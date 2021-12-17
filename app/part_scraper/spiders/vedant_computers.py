@@ -2,8 +2,9 @@ import scrapy
 from scrapy.loader import ItemLoader
 
 from part_scraper.items import PartScraperItem
+from config import DB_CATEGORIES
 
-CATEGORIES = [
+SITE_CATEGORIES = [
     # "peripherals",
     # "networking",
     # "power-supply",
@@ -25,13 +26,17 @@ class VedantComputersSpider(scrapy.Spider):
     allowed_domains = ["vedantcomputers.com/pc-components/"]
     start_urls = [
         f"https://www.vedantcomputers.com/pc-components/{category}?limit={PRODUCTS_LIMIT}&page=1"
-        for category in CATEGORIES
+        for category in SITE_CATEGORIES
     ]
 
     def parse(self, response):
 
         # Check if the page has any results i.e. if the div with the "product-grid" class exists.
         items = response.css(".main-products.product-grid .caption")
+
+        # Get the current category of the items. It will be needed for the "category"
+        # column in the database.
+        category = DB_CATEGORIES[response.request.url.rpartition("/")[-1].split("?")[0]]
 
         if items:
 
@@ -41,7 +46,6 @@ class VedantComputersSpider(scrapy.Spider):
                 url = (
                     item.css("div.name a::attr(href)")
                     .get()
-                    .replace(f"&limit={PRODUCTS_LIMIT}", "")
                     .replace(f"?limit={PRODUCTS_LIMIT}", "")
                 )
 
@@ -49,6 +53,7 @@ class VedantComputersSpider(scrapy.Spider):
                 loader.add_css("name", "div.name a::text")
                 loader.add_css("price", ".price-normal::text")
                 loader.add_value("url", url)
+                loader.add_value("category", category)
                 loader.add_value("store", "Vedant_Computers")
 
                 yield loader.load_item()

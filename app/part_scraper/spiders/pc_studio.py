@@ -2,8 +2,9 @@ import scrapy
 from scrapy.loader import ItemLoader
 
 from part_scraper.items import PartScraperItem
+from config import DB_CATEGORIES
 
-CATEGORIES = [
+SITE_CATEGORIES = [
     # ["accessories", 168],
     # ["cabinet-fan", 148],
     # ["cabinets", 73],
@@ -23,12 +24,16 @@ class PCStudioSpider(scrapy.Spider):
     allowed_domains = ["pcstudio.in"]
     start_urls = [
         f"https://www.pcstudio.in/product-category/{category[0]}/?jsf=woocommerce-archive&tax=product_cat:{category[1]}&pagenum=1"
-        for category in CATEGORIES
+        for category in SITE_CATEGORIES
     ]
 
     def parse(self, response):
 
         items = response.css(".jet-woo-products-wrapper .jet-woo-builder-product")
+
+        # Get the current category of the items. It will be needed for the "category"
+        # column in the database.
+        category = DB_CATEGORIES[response.request.url.split("/")[4]]
 
         for item in items:
 
@@ -45,6 +50,7 @@ class PCStudioSpider(scrapy.Spider):
                 loader.add_css(
                     "url", "h3.jet-woo-builder-archive-product-title a::attr(href)"
                 )
+                loader.add_value("category", category)
                 loader.add_value("store", "PC_Studio")
 
                 yield loader.load_item()

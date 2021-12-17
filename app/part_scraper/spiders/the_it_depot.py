@@ -3,8 +3,9 @@ import scrapy
 from scrapy.loader import ItemLoader
 
 from part_scraper.items import PartScraperItem
+from config import DB_CATEGORIES
 
-CATEGORIES = [
+SITE_CATEGORIES = [
     # "Computer+Cabinets_C5",
     # "Cooling+Devices_C10",
     "Graphic+Cards_C45",
@@ -26,10 +27,23 @@ class ITDepotSpider(scrapy.Spider):
     allowed_domains = ["theitdepot.com"]
     start_urls = [
         f"https://www.theitdepot.com/products-{category}.html"
-        for category in CATEGORIES
+        for category in SITE_CATEGORIES
     ]
 
     def parse(self, response):
+
+        # Get the current category of the items. It will be needed for the "category"
+        # column in the database.
+        # Check if it exists in the response meta, else extract it from the URL.
+        category = response.meta.get("category")
+        if not category:
+            category = (
+                response.request.url.replace("https://www.theitdepot.com/products-", "")
+                .replace(".html", "")
+                .split("_")
+            )
+
+            category[1] = category[1].replace("C", "")
 
         items = response.css(".product-item")
 
@@ -49,12 +63,12 @@ class ITDepotSpider(scrapy.Spider):
                     "div.product-details > .card-text > strong::text",
                 )
                 loader.add_value("url", response.urljoin(url))
+                loader.add_value("category", DB_CATEGORIES[category[0]])
                 loader.add_value("store", "IT_Depot")
 
                 yield loader.load_item()
 
         """
-        The ITDepot site does not make it easy to use pagination and crawl multiple pages of requests.
         Unlike other sites which use simple links to go to the next pages, the ITDepot site sends a request
         to the server and receives a HTML response, which it uses to refresh the search results section of the same page.
         So this spider sends requests to the same URL and scrapes the data from the returned HTML.
@@ -74,15 +88,6 @@ class ITDepotSpider(scrapy.Spider):
                 response.css(".pagination > li:nth-last-child(3) > a::text").get()
             )
             total_pages = int(total_pages) if total_pages else 0
-
-            # Get the current category of the items.
-            category = (
-                response.request.url.replace("https://www.theitdepot.com/products-", "")
-                .replace(".html", "")
-                .split("_")
-            )
-
-            category[1] = category[1].replace("C", "")
 
             # The page number will start from 1
             page_no = 1
@@ -105,5 +110,6 @@ class ITDepotSpider(scrapy.Spider):
                     "url_prefix": next_page_url_prefix,
                     "page_no": page_no,
                     "total_pages": total_pages,
+                    "category": category,
                 },
             )

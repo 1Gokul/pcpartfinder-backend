@@ -1,9 +1,10 @@
 import scrapy
 from scrapy.loader import ItemLoader
+from config import DB_CATEGORIES
 
 from part_scraper.items import PartScraperItem
 
-CATEGORIES = [
+SITE_CATEGORIES = [
     # "motherboards",
     # "it-peripheral",
     # "speakers",
@@ -22,12 +23,17 @@ class PCShopSpider(scrapy.Spider):
     name = "pc_shop"
     allowed_domains = ["pcshop.in"]
     start_urls = [
-        f"https://www.pcshop.in/product-category/{category}/" for category in CATEGORIES
+        f"https://www.pcshop.in/product-category/{category}/page/1"
+        for category in SITE_CATEGORIES
     ]
 
     def parse(self, response):
 
         items = response.css(".products .product-item__inner")
+
+        # Get the current category of the items. It will be needed for the "category"
+        # column in the database.
+        category = DB_CATEGORIES[response.request.url.split("/")[4]]
 
         for item in items:
             loader = ItemLoader(item=PartScraperItem(), selector=item)
@@ -43,6 +49,7 @@ class PCShopSpider(scrapy.Spider):
                 "url",
                 "div.product-item__header a.woocommerce-loop-product__link::attr(href)",
             )
+            loader.add_value("category", category)
             loader.add_value("store", "PC_Shop")
 
             yield loader.load_item()

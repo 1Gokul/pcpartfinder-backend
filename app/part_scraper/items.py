@@ -19,5 +19,6 @@ class PartScraperItem(Item):
         input_processor=MapCompose(format_price), output_processor=TakeFirst()
     )
     url = Field(output_processor=TakeFirst())
+    category = Field(output_processor=TakeFirst())
     store = Field(output_processor=TakeFirst())
     pass

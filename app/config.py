@@ -13,3 +13,18 @@ STORES = [
     "National_PC",
     "Tech_Booze",
 ]
+
+# Used to categorize the scraped items
+DB_CATEGORIES = {
+    **dict.fromkeys(
+        [
+            "graphics-cards",
+            "graphic-cards",
+            "graphics-card",
+            "graphic-card",
+            "graphic-cards-gpu",
+            "Graphic+Cards",
+        ],
+        "GPU",
+    )
+}

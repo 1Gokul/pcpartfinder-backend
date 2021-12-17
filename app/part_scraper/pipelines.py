@@ -39,6 +39,7 @@ class PartScraperPipeline(object):
                         "Name VARCHAR(300) NOT NULL, "
                         "Price INT, "
                         "URL VARCHAR(1000), "
+                        "Category VARCHAR(50), "
                         "StoreName VARCHAR(50), "
                         ");"
                     )
@@ -56,10 +57,11 @@ class PartScraperPipeline(object):
             cursor = conn.cursor()
             try:
                 cursor.execute(
-                    f"INSERT INTO {DB_TABLE_NAME}(Name, Price, URL, StoreName) VALUES (?, ?, ?, ?)",
+                    f"INSERT INTO {DB_TABLE_NAME}(Name, Price, URL, Category, StoreName) VALUES (?, ?, ?, ?, ?)",
                     item["name"],
                     item["price"],
                     item["url"],
+                    item["category"],
                     item["store"],
                 )
 
