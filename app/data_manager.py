@@ -1,4 +1,4 @@
-import subprocess
+from subprocess import Popen
 import pyodbc
 import os
 
@@ -9,7 +9,7 @@ def crawl_data():
     """
     Crawl the data and insert the info into a database.
     """
-    subprocess.call("python3 " + "crawler.py", shell=True)
+    Popen(["python3", "crawler.py"], shell=False)
 
 
 async def search(query):

@@ -23,7 +23,7 @@ class PCShopSpider(scrapy.Spider):
     name = "pc_shop"
     allowed_domains = ["pcshop.in"]
     start_urls = [
-        f"https://www.pcshop.in/product-category/{category}/page/1"
+        f"https://www.pcshop.in/product-category/{category}"
         for category in SITE_CATEGORIES
     ]
 
